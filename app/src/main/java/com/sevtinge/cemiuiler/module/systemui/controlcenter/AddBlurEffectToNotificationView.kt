@@ -87,7 +87,7 @@ object AddBlurEffectToNotificationView : BaseHook() {
             
             if(isFlinging || isSwipingUp){
 
-            return@replaceMethod  getScreenHeight.toFloat()
+            return@replaceMethod  -getScreenHeight.toFloat()
 
             } else {
             
@@ -96,7 +96,7 @@ object AddBlurEffectToNotificationView : BaseHook() {
             }             
 
     }
-    
+/*    
 //避免修改上滑极限值以后动画速度过快
       "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod( "getAppearFraction")
             {
@@ -118,7 +118,7 @@ object AddBlurEffectToNotificationView : BaseHook() {
             }             
 
             }
-            
+   */         
         // 每次设置背景的时候都同时改透明度
         XposedBridge.hookAllMethods(
             notificationBackgroundViewClass,
