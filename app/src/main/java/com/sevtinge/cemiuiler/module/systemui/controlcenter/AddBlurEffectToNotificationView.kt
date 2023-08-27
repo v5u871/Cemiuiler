@@ -72,6 +72,45 @@ object AddBlurEffectToNotificationView : BaseHook() {
                     "com.android.systemui.statusbar.phone.MiuiNotificationPanelViewController\$mBlurRatioChangedListener\$1"
             ) ?: return
         
+      "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod("getOverExpansion")
+            {    
+
+            val getScreenHeight =
+                findClass("com.android.systemui.fsgesture.AppQuickSwitchActivity").callStaticMethod("getScreenHeight",appContext) as Int
+                
+
+            
+            val mOverExpansion = it.thisObject.getObjectField("mOverExpansion")  as Float
+                                 
+            
+            val isScreenLandscape =
+                findClass("com.android.systemui.statusbar.notification.NotificationUtil").callStaticMethod("isScreenLandscape") as Boolean
+            
+
+              
+            val isNCSwitching = it.thisObject.getObjectField("isNCSwitching")  as Boolean
+            
+            val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp")  as Boolean
+            
+            val isFlinging = it.thisObject.getObjectField("mIsFlinging")  as Boolean
+            
+
+            if( (isSwipingUp || isFlinging) && !isNCSwitching){
+            
+            return@replaceMethod -(getScreenHeight).toFloat()
+            
+             
+            } else {
+            
+return@replaceMethod mOverExpansion
+            
+            }
+            }
+                         
+           
+      
+ 
+
 //修改横幅通知上滑极限值
     "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod("getStackTranslation")
             {            
@@ -80,45 +119,29 @@ object AddBlurEffectToNotificationView : BaseHook() {
                 findClass("com.android.systemui.fsgesture.AppQuickSwitchActivity").callStaticMethod("getScreenHeight",appContext) as Int            
              
             val mStackTranslation = it.thisObject.getObjectField("mStackTranslation")  as Float
-            
-            val isFlinging = it.thisObject.getObjectField("mIsFlinging")  as Boolean
+                                  
+            val isScreenLandscape =
+                findClass("com.android.systemui.statusbar.notification.NotificationUtil").callStaticMethod("isScreenLandscape") as Boolean    
+
+            val isNCSwitching = it.thisObject.getObjectField("isNCSwitching")  as Boolean
             
             val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp")  as Boolean
             
-            if(isFlinging || isSwipingUp){
+            val isFlinging = it.thisObject.getObjectField("mIsFlinging")  as Boolean
+            
+            if((isSwipingUp || isFlinging) && !isNCSwitching){
 
-            return@replaceMethod  -getScreenHeight.toFloat()
-
+            if(isScreenLandscape) return@replaceMethod -getScreenHeight.toFloat()/2 else return@replaceMethod -(getScreenHeight).toFloat()/3
+            
             } else {
             
             return@replaceMethod mStackTranslation
             
-            }             
-
-    }
-/*    
-//避免修改上滑极限值以后动画速度过快
-      "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod( "getAppearFraction")
-            {
-            
-            val appearFraction = it.thisObject.getObjectField("mAppearFraction")  as Float
-            
-            val isFlinging = it.thisObject.getObjectField("mIsFlinging")  as Boolean
-                        
-            val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp")  as Boolean
-            
-            if(isFlinging || isSwipingUp){
-            
-            return@replaceMethod -appearFraction * appearFraction * appearFraction
-            
-            }else {
-            
-            return@replaceMethod appearFraction
-            
-            }             
-
             }
-   */         
+            
+            
+            }   
+            
         // 每次设置背景的时候都同时改透明度
         XposedBridge.hookAllMethods(
             notificationBackgroundViewClass,
