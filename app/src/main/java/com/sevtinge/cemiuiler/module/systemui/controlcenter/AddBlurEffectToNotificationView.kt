@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.sevtinge.cemiuiler.module.base.BaseHook
 import com.sevtinge.cemiuiler.utils.HookUtils
 import com.sevtinge.cemiuiler.utils.devicesdk.isAndroidU
+import com.sevtinge.cemiuiler.utils.devicesdk.isAndroidT
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
