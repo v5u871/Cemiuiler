@@ -74,41 +74,66 @@ object AddBlurEffectToNotificationView : BaseHook() {
                     "com.android.systemui.statusbar.phone.MiuiNotificationPanelViewController\$mBlurRatioChangedListener\$1"
             ) ?: return
 
-        // 修改横幅通知上滑极限值，存在部分异常问题，暂时回退
-        /*if (!isAndroidS()) {
-            "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod("getStackTranslation") {
-                val getScreenHeight =
-                    findClass("com.android.systemui.fsgesture.AppQuickSwitchActivity")
-                        .callStaticMethod("getScreenHeight", appContext) as Int
+               if (isAndroidT()) {
+       
+     //换个方式修改通知上划极限值
+      "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod("getOverExpansion")
+            {    
 
-                val mStackTranslation = it.thisObject.getObjectField("mStackTranslation") as Float
-
-                val isFlinging = it.thisObject.getObjectField("mIsFlinging") as Boolean
-
-                val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp") as Boolean
-
-                if (isFlinging || isSwipingUp)
-                    return@replaceMethod getScreenHeight.toFloat()
-                else
-                    return@replaceMethod mStackTranslation
-
+            val getScreenHeight =
+                findClass("com.android.systemui.fsgesture.AppQuickSwitchActivity").callStaticMethod("getScreenHeight",appContext) as Int
+                            
+            val mOverExpansion = it.thisObject.getObjectField("mOverExpansion")  as Float
+              
+            val isNCSwitching = it.thisObject.getObjectField("isNCSwitching")  as Boolean
+            
+            val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp")  as Boolean
+            
+            val isFlinging = it.thisObject.getObjectField("mIsFlinging")  as Boolean
+            
+            val isAppearing = it.thisObject.getObjectField("mAppearing")  as Boolean
+            
+            if( isAppearing && (isSwipingUp || isFlinging) && ! isNCSwitching){
+            
+            return@replaceMethod -getScreenHeight.toFloat()
+            
+             
+            } else {
+            
+            return@replaceMethod mOverExpansion
+            
             }
-
-            // 避免修改上滑极限值以后动画速度过快
-            "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod("getAppearFraction") {
-
-                val appearFraction = it.thisObject.getObjectField("mAppearFraction") as Float
-
-                val isFlinging = it.thisObject.getObjectField("mIsFlinging") as Boolean
-
-                val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp") as Boolean
-
-                if (isFlinging || isSwipingUp)
-                    return@replaceMethod -appearFraction * appearFraction * appearFraction
-                else
-                    return@replaceMethod appearFraction
             }
-        }*/
+            
+          "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod( "getAppearFraction")
+            {
+            
+            val isNCSwitching = it.thisObject.getObjectField("isNCSwitching")  as Boolean
+            
+            val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp")  as Boolean
+            
+            val isFlinging = it.thisObject.getObjectField("mIsFlinging")  as Boolean
+            
+            val mAppearFraction = it.thisObject.getObjectField("mAppearFraction")  as Float
+            
+            val isAppearing = it.thisObject.getObjectField("mAppearing")  as Boolean
+            
+
+            val isScreenLandscape =
+                findClass("com.android.systemui.statusbar.notification.NotificationUtil").callStaticMethod("isScreenLandscape") as Boolean
+            
+            
+            if(isAppearing && (isSwipingUp || isFlinging) && !isNCSwitching){
+        
+            if(isScreenLandscape) return@replaceMethod mAppearFraction*3 else return@replaceMethod mAppearFraction*2
+
+            
+            } else {
+            return@replaceMethod mAppearFraction
+ 
+            }
+            }        
+     }
 
         // 每次设置背景的时候都同时改透明度
         XposedBridge.hookAllMethods(
