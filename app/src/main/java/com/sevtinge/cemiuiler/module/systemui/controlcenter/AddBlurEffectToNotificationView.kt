@@ -9,7 +9,7 @@ import com.sevtinge.cemiuiler.module.base.BaseHook
 import com.sevtinge.cemiuiler.utils.HookUtils
 import com.sevtinge.cemiuiler.utils.callStaticMethod
 import com.sevtinge.cemiuiler.utils.devicesdk.isAndroidS
-import com.sevtinge.cemiuiler.utils.devicesdk.isAndroidU
+import com.sevtinge.cemiuiler.utils.devicesdk.isAndroidT
 import com.sevtinge.cemiuiler.utils.getObjectField
 import com.sevtinge.cemiuiler.utils.replaceMethod
 import de.robv.android.xposed.XC_MethodHook
