@@ -12,6 +12,7 @@ import com.sevtinge.cemiuiler.utils.devicesdk.isAndroidT
 import com.sevtinge.cemiuiler.utils.devicesdk.isAndroidU
 import com.sevtinge.cemiuiler.utils.getObjectField
 import com.sevtinge.cemiuiler.utils.replaceMethod
+import com.sevtinge.cemiuiler.utils.hookAfterMethod
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
@@ -74,7 +75,9 @@ object AddBlurEffectToNotificationView : BaseHook() {
                     "com.android.systemui.statusbar.phone.MiuiNotificationPanelViewController\$mBlurRatioChangedListener\$1"
             ) ?: return
 
-               if (isAndroidT()) {
+       if (isAndroidT()) {
+       
+       var hasActiveMediaOrRecommendation = false
        
      //换个方式修改通知上划极限值
       "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod("getOverExpansion")
@@ -108,6 +111,13 @@ object AddBlurEffectToNotificationView : BaseHook() {
           "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod( "getAppearFraction")
             {
             
+          mediaDataFilterClass.hookAfterMethod("hasActiveMediaOrRecommendation") {
+        hasActiveMediaOrRecommendation = it.result as Boolean
+                }
+            
+                            
+            val mExpansionChanging = it.thisObject.getObjectField("mExpansionChanging")  as Boolean
+            
             val isNCSwitching = it.thisObject.getObjectField("isNCSwitching")  as Boolean
             
             val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp")  as Boolean
@@ -122,17 +132,23 @@ object AddBlurEffectToNotificationView : BaseHook() {
             val isScreenLandscape =
                 findClass("com.android.systemui.statusbar.notification.NotificationUtil").callStaticMethod("isScreenLandscape") as Boolean
             
-            
-            if(isAppearing && (isSwipingUp || isFlinging) && !isNCSwitching){
-        
-            if(isScreenLandscape) return@replaceMethod mAppearFraction*3 else return@replaceMethod mAppearFraction*2
 
             
+            if(isAppearing && (isSwipingUp || isFlinging) && !isNCSwitching){
+            if(hasActiveMediaOrRecommendation){
+            if(isScreenLandscape)             return@replaceMethod mAppearFraction*6.0f else return@replaceMethod mAppearFraction*2.0f
+            } else {
+            
+            if(isScreenLandscape)
+            return@replaceMethod mAppearFraction*mAppearFraction*mAppearFraction/2.5f else return@replaceMethod mAppearFraction*mAppearFraction*mAppearFraction*3.5f
+           
+            }
             } else {
             return@replaceMethod mAppearFraction
  
             }
             }        
+     }
      }
 
         // 每次设置背景的时候都同时改透明度
