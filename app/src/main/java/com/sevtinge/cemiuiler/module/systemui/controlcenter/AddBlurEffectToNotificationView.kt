@@ -149,7 +149,7 @@ object AddBlurEffectToNotificationView : BaseHook() {
             }
             }        
      }
-     }
+     
 
         // 每次设置背景的时候都同时改透明度
         XposedBridge.hookAllMethods(
