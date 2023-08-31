@@ -74,7 +74,11 @@ object AddBlurEffectToNotificationView : BaseHook() {
                 else
                     "com.android.systemui.statusbar.phone.MiuiNotificationPanelViewController\$mBlurRatioChangedListener\$1"
             ) ?: return
-
+        
+        val mediaDataFilterClass = findClassIfExists(
+            "com.android.systemui.media.MediaDataFilter"
+        ) ?: return
+        
        if (isAndroidT()) {
        
        var hasActiveMediaOrRecommendation = false
