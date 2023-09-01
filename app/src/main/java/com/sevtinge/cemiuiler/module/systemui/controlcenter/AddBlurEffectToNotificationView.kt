@@ -191,6 +191,22 @@ object AddBlurEffectToNotificationView : BaseHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     val notificationBackground = param.thisObject as View
                     val backgroundDrawable = notificationBackground.background ?: return
+                          if (isTransparentAble()) {
+                        XposedHelpers.callMethod(
+                            notificationBackground.background,
+                            "setVisible",
+                            false,
+                            false
+                        )
+                        } else {
+                        
+                        XposedHelpers.callMethod(
+                            notificationBackground.background,
+                            "setVisible",
+                            true,
+                            false
+                        )
+                                        }
                     if (HookUtils.isBlurDrawable(backgroundDrawable)) {
                         val drawable = param.args[1] as Drawable
                         backgroundDrawable.bounds = drawable.bounds
@@ -588,6 +604,16 @@ object AddBlurEffectToNotificationView : BaseHook() {
             })
     }
 
+    fun isTransparentAble(): Boolean {
+        val notificationContentInflaterInjectorClass = findClassIfExists(
+            "com.android.systemui.statusbar.notification.row.NotificationContentInflaterInjector"
+        ) ?: return true
+        return XposedHelpers.callStaticMethod(
+            notificationContentInflaterInjectorClass,
+            "isTransparentAble"
+        ) as Boolean
+     }
+    
     fun isDefaultLockScreenTheme(): Boolean {
         val miuiKeyguardUtilsClass = findClassIfExists(
             if (isAndroidU())
