@@ -82,6 +82,11 @@ object AddBlurEffectToNotificationView : BaseHook() {
        if (isAndroidT()) {
        
        var hasActiveMediaOrRecommendation = false
+
+mediaDataFilterClass.hookAfterMethod("hasActiveMediaOrRecommendation") {
+        hasActiveMediaOrRecommendation = it.result as Boolean
+                }
+
        
      //换个方式修改通知上划极限值
       "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod("getOverExpansion")
@@ -115,10 +120,6 @@ object AddBlurEffectToNotificationView : BaseHook() {
           "com.android.systemui.statusbar.notification.stack.AmbientState".replaceMethod( "getAppearFraction")
             {
             
-          mediaDataFilterClass.hookAfterMethod("hasActiveMediaOrRecommendation") {
-        hasActiveMediaOrRecommendation = it.result as Boolean
-                }
-            
                             
             val mExpansionChanging = it.thisObject.getObjectField("mExpansionChanging")  as Boolean
             
@@ -144,7 +145,7 @@ object AddBlurEffectToNotificationView : BaseHook() {
             } else {
             
             if(isScreenLandscape)
-            return@replaceMethod mAppearFraction*mAppearFraction*mAppearFraction/2.5f else return@replaceMethod mAppearFraction*mAppearFraction*mAppearFraction*3.5f
+            return@replaceMethod (mAppearFraction*mAppearFraction*mAppearFraction)/2.5f else return@replaceMethod (mAppearFraction*mAppearFraction*mAppearFraction)*3.5f
            
             }
             } else {
