@@ -105,10 +105,20 @@ mediaDataFilterClass.hookAfterMethod("hasActiveMediaOrRecommendation") {
             
             val isAppearing = it.thisObject.getObjectField("mAppearing")  as Boolean
             
-            if( isAppearing && (isSwipingUp || isFlinging) && ! isNCSwitching){
+             val isScreenLandscape = findClass("com.android.systemui.statusbar.notification.NotificationUtil").callStaticMethod("isScreenLandscape") as Boolean
+
+            if (isAppearing && (isSwipingUp || isFlinging) && ! isNCSwitching){
+
+            if(hasActiveMediaOrRecommendation){
+
+            if(isScreenLandscape)             return@replaceMethod -getScreenHeight.toFloat() else return@replaceMethod -getScreenHeight.toFloat()*6.0f
+            } else {
             
-            return@replaceMethod -getScreenHeight.toFloat()
-            
+            if (isScreenLandscape)
+
+            return@replaceMethod -getScreenHeight.toFloat()/3.0f else return@replaceMethod -getScreenHeight.toFloat()/1.2f
+           
+            }
              
             } else {
             
@@ -136,19 +146,13 @@ mediaDataFilterClass.hookAfterMethod("hasActiveMediaOrRecommendation") {
 
             val isScreenLandscape =
                 findClass("com.android.systemui.statusbar.notification.NotificationUtil").callStaticMethod("isScreenLandscape") as Boolean
-            
+ 
+            if (isAppearing && (isSwipingUp || isFlinging) && !isNCSwitching && hasActiveMediaOrRecommendation && isScreenLandscape){
 
-            
-            if(isAppearing && (isSwipingUp || isFlinging) && !isNCSwitching){
-            if(hasActiveMediaOrRecommendation){
-            if(isScreenLandscape)             return@replaceMethod mAppearFraction*6.0f else return@replaceMethod mAppearFraction*2.0f
+            return@replaceMethod mAppearFraction*6.0f
+
             } else {
-            
-            if(isScreenLandscape)
-            return@replaceMethod (mAppearFraction*mAppearFraction*mAppearFraction)/2.5f else return@replaceMethod (mAppearFraction*mAppearFraction*mAppearFraction)*3.5f
-           
-            }
-            } else {
+
             return@replaceMethod mAppearFraction
  
             }
