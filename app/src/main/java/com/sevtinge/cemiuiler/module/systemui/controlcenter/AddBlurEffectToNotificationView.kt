@@ -78,6 +78,11 @@ object AddBlurEffectToNotificationView : BaseHook() {
         val mediaDataFilterClass = findClassIfExists(
             "com.android.systemui.media.MediaDataFilter"
         ) ?: return
+
+        val expandableNotificationRowClass = findClassIfExists(
+            "com.android.systemui.statusbar.notification.row.ExpandableNotificationRow"
+        ) ?: return
+
         
        if (isAndroidT()) {
        
@@ -159,6 +164,13 @@ mediaDataFilterClass.hookAfterMethod("hasActiveMediaOrRecommendation") {
             }        
      }
      
+//增加一个锁屏页面判断
+
+            var OnKeyguard = false
+
+expandableNotificationRowClass.hookAfterMethod("isOnKeyguard") {
+        OnKeyguard = it.result as Boolean
+                }
 
         // 每次设置背景的时候都同时改透明度
         XposedBridge.hookAllMethods(
@@ -172,7 +184,7 @@ mediaDataFilterClass.hookAfterMethod("hasActiveMediaOrRecommendation") {
                     mDrawableAlphaField.isAccessible = true
                     val isHandsUp =
                         XposedHelpers.callMethod(notificationBackgroundView, "headsUp") as Boolean
-                    if (isHandsUp) {
+                    if (isHandsUp || OnKeyguard) {
                         mDrawableAlphaField.set(notificationBackgroundView, blurBackgroundAlpha)
                         setDrawableAlpha(
                             notificationBackgroundView,
