@@ -223,10 +223,14 @@ public class SystemUI extends BaseModule {
         initHook(HideLockScreenHint.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_unlock_tip"));
         initHook(HideLockScreenStatusBar.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_hide_status_bar"));
 
-        if (!isAndroidR()) {
-            initHook(AddBlurEffectToLockScreen.INSTANCE);
-            initHook(AddBlurEffectToNotificationView.INSTANCE, mPrefsMap.getBoolean("n_enable"));
-            initHook(BlurButton.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_blur_button"));
+        if (!SdkHelper.isAndroidTiramisu()) {
+        initHook(AddBlurEffectToLockScreen.INSTANCE);    
+        initHook(AddBlurEffectToNotificationView.INSTANCE, mPrefsMap.getBoolean("n_enable"));
+        initHook(BlurButton.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_blur_button"));
+        }
+     //安卓13通知模糊   
+        if (SdkHelper.isAndroidTiramisu()) {
+        initHook(AddBlurEffectToNotificationViewForT.INSTANCE, mPrefsMap.getBoolean("n_T_enable"));
         }
 
         initHook(DoubleTapToSleep.INSTANCE, mPrefsMap.getBoolean("system_ui_status_bar_double_tap_to_sleep"));
