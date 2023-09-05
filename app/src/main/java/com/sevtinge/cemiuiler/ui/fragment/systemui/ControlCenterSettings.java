@@ -41,7 +41,7 @@ public class ControlCenterSettings extends SettingsPreferenceFragment {
         mNewCCGrid = findPreference("prefs_key_system_control_center_cc_rows");
         mNewCCGridRect = findPreference("prefs_key_system_ui_control_center_rounded_rect");
         mNotice = findPreference("prefs_key_n_enable");
-        mAddBlurEffectToNotificationViewForT = findPreference("prefs_key_n_T_enable");
+        mAddBlurEffectToNotificationViewForT = findPreference("prefs_key_T_enable");
         mAddBlurEffectToNotificationViewForT.setVisible(isAndroidT());
         mFixMediaPanel.setVisible(isAndroidS() || isAndroidSv2());
         mNewCCGrid.setVisible(!isAndroidR());
