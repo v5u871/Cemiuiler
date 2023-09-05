@@ -804,6 +804,7 @@
     <string name="personal_assistant_blurradius">Personal assistant blur value</string>
     <string name="personal_assistant_color">Personal assistant color</string>
     <string name="security_center_blur_model">Sidebar blur model</string>
+    <string name="system_ui_control_center_notification_T">Notification Blur Model (Android13)</string>
     <string name="security_center_blurradius">Sidebar blur value</string>
     <string name="security_center_color">Sidebar color</string>
     <string name="system_other_delete_on_post_notification">Remove the upper display notification</string>
