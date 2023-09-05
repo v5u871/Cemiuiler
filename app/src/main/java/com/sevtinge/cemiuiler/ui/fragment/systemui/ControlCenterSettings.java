@@ -47,6 +47,12 @@ public class ControlCenterSettings extends SettingsPreferenceFragment {
         mNewCCGrid.setVisible(!isAndroidR());
         mNewCCGridRect.setVisible(!isAndroidR());
         mNotice.setVisible(!isAndroidT());
+        if(isAndroidT()){
+mNotice.setEnabled(false);
+}
+        if(!isAndroidT()){
+mAddBlurEffectToNotificationViewForT.setEnabled(false);
+}
 
         ((SeekBarPreferenceEx) findPreference("prefs_key_system_control_center_old_qs_grid_columns")).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
