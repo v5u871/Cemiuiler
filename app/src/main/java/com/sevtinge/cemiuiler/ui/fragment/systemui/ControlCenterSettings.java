@@ -3,7 +3,7 @@ package com.sevtinge.cemiuiler.ui.fragment.systemui;
 import static com.sevtinge.cemiuiler.utils.devicesdk.SystemSDKKt.isAndroidR;
 import static com.sevtinge.cemiuiler.utils.devicesdk.SystemSDKKt.isAndroidS;
 import static com.sevtinge.cemiuiler.utils.devicesdk.SystemSDKKt.isAndroidSv2;
-
+import static com.sevtinge.cemiuiler.utils.devicesdk.SystemSDKKt.isAndroidT;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.SeekBar;
@@ -44,7 +44,7 @@ public class ControlCenterSettings extends SettingsPreferenceFragment {
         mNotice = findPreference("prefs_key_n_enable");
         mAddBlurEffectToNotificationView = findPreference("prefs_key_n_enable");
         
-        mAddBlurEffectToNotificationView.setVisible(!SdkHelper.isAndroidTiramisu());
+        mAddBlurEffectToNotificationView.setVisible(!isAndroidT());
         mFixMediaPanel.setVisible(isAndroidS() || isAndroidSv2());
         mNewCCGrid.setVisible(!isAndroidR());
         mNewCCGridRect.setVisible(!isAndroidR());
