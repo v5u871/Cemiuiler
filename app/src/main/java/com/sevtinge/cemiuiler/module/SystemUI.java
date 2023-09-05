@@ -1,7 +1,7 @@
 package com.sevtinge.cemiuiler.module;
 
 import static com.sevtinge.cemiuiler.utils.devicesdk.SystemSDKKt.isAndroidR;
-
+import static com.sevtinge.cemiuiler.utils.devicesdk.SystemSDKKt.isAndroidT;
 import com.sevtinge.cemiuiler.module.base.BaseModule;
 import com.sevtinge.cemiuiler.module.systemui.AutoCollapse;
 import com.sevtinge.cemiuiler.module.systemui.BluetoothRestrict;
@@ -223,13 +223,13 @@ public class SystemUI extends BaseModule {
         initHook(HideLockScreenHint.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_unlock_tip"));
         initHook(HideLockScreenStatusBar.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_hide_status_bar"));
 
-        if (!SdkHelper.isAndroidTiramisu()) {
+        if (!isAndroidT()) {
         initHook(AddBlurEffectToLockScreen.INSTANCE);    
         initHook(AddBlurEffectToNotificationView.INSTANCE, mPrefsMap.getBoolean("n_enable"));
         initHook(BlurButton.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_blur_button"));
         }
      //安卓13通知模糊   
-        if (SdkHelper.isAndroidTiramisu()) {
+        if (isAndroidT()) {
         initHook(AddBlurEffectToNotificationViewForT.INSTANCE, mPrefsMap.getBoolean("n_T_enable"));
         }
 
