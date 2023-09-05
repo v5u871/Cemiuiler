@@ -228,7 +228,9 @@ public class SystemUI extends BaseModule {
         initHook(AddBlurEffectToNotificationView.INSTANCE, mPrefsMap.getBoolean("n_enable"));
         initHook(BlurButton.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_blur_button"));
         }
-     //安卓13通知模糊   
+        
+        //安卓13通知模糊
+        
         if (isAndroidT()) {
         initHook(AddBlurEffectToNotificationViewForT.INSTANCE, mPrefsMap.getBoolean("n_T_enable"));
         }
