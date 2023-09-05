@@ -234,7 +234,7 @@ initHook(BlurButton.INSTANCE, mPrefsMap.getBoolean("system_ui_lock_screen_blur_b
         //安卓13通知模糊
         
         if (isAndroidT()) {
-        initHook(AddBlurEffectToNotificationViewForT.INSTANCE, mPrefsMap.getBoolean("n_T_enable"));
+        initHook(AddBlurEffectToNotificationViewForT.INSTANCE, mPrefsMap.getBoolean("T_enable"));
         }
 
         initHook(DoubleTapToSleep.INSTANCE, mPrefsMap.getBoolean("system_ui_status_bar_double_tap_to_sleep"));
