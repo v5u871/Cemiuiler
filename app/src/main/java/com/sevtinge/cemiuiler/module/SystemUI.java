@@ -17,6 +17,7 @@ import com.sevtinge.cemiuiler.module.systemui.QSDetailBackGround;
 import com.sevtinge.cemiuiler.module.systemui.StatusBarActions;
 import com.sevtinge.cemiuiler.module.systemui.SwitchControlPanel;
 import com.sevtinge.cemiuiler.module.systemui.controlcenter.AddBlurEffectToNotificationView;
+import com.sevtinge.cemiuiler.module.systemui.controlcenter.AddBlurEffectToNotificationViewForT;
 import com.sevtinge.cemiuiler.module.systemui.controlcenter.CCGrid;
 import com.sevtinge.cemiuiler.module.systemui.controlcenter.CompactNotificationsHook;
 import com.sevtinge.cemiuiler.module.systemui.controlcenter.FixMediaControlPanel;
