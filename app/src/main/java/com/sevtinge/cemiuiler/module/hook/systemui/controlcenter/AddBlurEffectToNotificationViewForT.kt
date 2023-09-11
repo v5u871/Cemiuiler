@@ -128,8 +128,6 @@ package com.sevtinge.cemiuiler.module.hook.systemui.controlcenter
              { 
   
   
-             val mExpansionChanging = it.thisObject.getObjectField("mExpansionChanging")  as Boolean 
-  
              val isNCSwitching = it.thisObject.getObjectField("isNCSwitching")  as Boolean 
   
              val isSwipingUp = it.thisObject.getObjectField("mIsSwipingUp")  as Boolean 
@@ -484,21 +482,33 @@ package com.sevtinge.cemiuiler.module.hook.systemui.controlcenter
              }) 
   
          // 锁屏画报 隐藏模糊 
+          // 修复AndroidT锁屏画报模糊残留
          XposedBridge.hookAllMethods( 
              lockScreenMagazineControllerClass, 
-             "setViewsAlpha", 
+             "setPanelViewAlpha", 
              object : XC_MethodHook() { 
                  override fun beforeHookedMethod(param: MethodHookParam) { 
                      if (!isDefaultLockScreenTheme()) return 
                      val alpha = param.args[0] as Float 
                      val drawableAlpha = alpha * 255 
-                     val mNotificationStackScrollLayout = HookUtils.getValueByField( 
-                         param.thisObject, 
-                         "mNotificationStackScrollLayout" 
-                     ) as ViewGroup 
-                     for (i in 0..mNotificationStackScrollLayout.childCount) { 
+                                          
+                                         val mNotificationStackScrollLayoutController =
+                        HookUtils.getValueByField(
+                            param.thisObject,
+                            "mNotificationStackScrollLayoutController"
+                        )
+                            ?: return
+                    val mView =
+                        HookUtils.getValueByField(
+                            mNotificationStackScrollLayoutController,
+                            "mView"
+                        ) ?: return
+                     
+ mView as ViewGroup
+ 
+                     for (i in 0..mView.childCount) { 
                          val childAt = 
-                             mNotificationStackScrollLayout.getChildAt(i) ?: continue 
+                             mView.getChildAt(i) ?: continue 
                          setBlurEffectAlphaForNotificationRow(childAt, drawableAlpha.toInt()) 
                      } 
                  } 
