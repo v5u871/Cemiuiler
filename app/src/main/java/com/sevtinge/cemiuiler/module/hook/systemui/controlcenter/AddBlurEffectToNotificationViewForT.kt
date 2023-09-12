@@ -3,7 +3,8 @@ package com.sevtinge.cemiuiler.module.hook.systemui.controlcenter
  import android.graphics.drawable.Drawable 
  import android.graphics.drawable.GradientDrawable 
  import android.view.View 
- import android.view.ViewGroup 
+ import android.view.ViewGroup
+import com.sevtinge.cemiuiler.utils.devicesdk.isMoreAndroidVersion 
  import com.github.kyuubiran.ezxhelper.EzXHelper.appContext 
  import com.sevtinge.cemiuiler.module.base.BaseHook 
  import com.sevtinge.cemiuiler.utils.HookUtils 
@@ -479,8 +480,9 @@ package com.sevtinge.cemiuiler.module.hook.systemui.controlcenter
                          } 
                      } 
                  } 
-             }) 
-  
+             })
+ 
+  if(isMoreAndroidVersion(33)) {
          // 锁屏画报 隐藏模糊 
           // 修复AndroidT锁屏画报模糊残留
          XposedBridge.hookAllMethods( 
@@ -512,8 +514,31 @@ package com.sevtinge.cemiuiler.module.hook.systemui.controlcenter
                          setBlurEffectAlphaForNotificationRow(childAt, drawableAlpha.toInt()) 
                      } 
                  } 
-             }) 
-  
+             })
+} else {
+
+         // 锁屏画报 隐藏模糊 
+         XposedBridge.hookAllMethods( 
+             lockScreenMagazineControllerClass, 
+             "setViewsAlpha", 
+             object : XC_MethodHook() { 
+                 override fun beforeHookedMethod(param: MethodHookParam) { 
+                     if (!isDefaultLockScreenTheme()) return 
+                     val alpha = param.args[0] as Float 
+                     val drawableAlpha = alpha * 255 
+                     val mNotificationStackScrollLayout = HookUtils.getValueByField( 
+                         param.thisObject, 
+                         "mNotificationStackScrollLayout" 
+                     ) as ViewGroup 
+                     for (i in 0..mNotificationStackScrollLayout.childCount) { 
+                         val childAt = 
+                             mNotificationStackScrollLayout.getChildAt(i) ?: continue 
+                         setBlurEffectAlphaForNotificationRow(childAt, drawableAlpha.toInt()) 
+                     } 
+                 } 
+             })  
+
+}
          XposedBridge.hookAllMethods( 
              notificationStackScrollLayoutClass, 
              "setDozing", 
