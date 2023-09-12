@@ -91,7 +91,7 @@ import com.sevtinge.cemiuiler.utils.devicesdk.isMoreAndroidVersion
              {     
   
              val getScreenHeight = 
-                 findClass("com.android.systemui.fsgesture.AppQuickSwitchActivity").callStaticMethod("getScreenHeight",appContext) as Int 
+                 findClass("com.android.systemui.fsgesture.AppQuickSwitchActivity").callStaticMethod("getScreenHeight", appContext) as Int 
   
              val mOverExpansion = it.thisObject.getObjectField("mOverExpansion")  as Float 
   
