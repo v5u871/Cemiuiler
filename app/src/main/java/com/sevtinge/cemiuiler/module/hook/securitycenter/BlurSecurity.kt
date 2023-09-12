@@ -161,7 +161,7 @@ object BlurSecurity : BaseHook() {
             }
         })
 
-        // if (getPackageVersionCode(lpparam) >= 40000754) {
+         if (getPackageVersionCode(lpparam) >= 40000754) {
         dexKitBridge.findMethod {
             methodReturnType = "Landroid/view/View;"
             methodParamTypes = arrayOf("Landroid/content/Context;", "Z", "Z")
@@ -202,7 +202,7 @@ object BlurSecurity : BaseHook() {
         }
         closeDexKit()
 
-        /*
+        
 
         XposedHelpers.findAndHookMethod(
             videoBoxViewClass,
@@ -274,7 +274,7 @@ object BlurSecurity : BaseHook() {
                 }
             })
     }
-    */
+    
 
 
         if (shouldInvertColor) {
