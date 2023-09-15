@@ -85,6 +85,12 @@ object BlurSecurity : BaseHook() {
                 videoBoxViewMethodName = "j"
             }
 
+            getPackageVersionCode(lpparam) == 40000821 -> {
+                appVersionCode = 40000771
+                videoBoxViewClass = findClassIfExists("s7.m") ?: return
+                videoBoxViewMethodName = "j"
+            }
+
             else -> {
                 videoBoxViewClass = findClassIfExists("com.miui.gamebooster.videobox.adapter.i")
                 videoBoxViewMethodName = "a"
