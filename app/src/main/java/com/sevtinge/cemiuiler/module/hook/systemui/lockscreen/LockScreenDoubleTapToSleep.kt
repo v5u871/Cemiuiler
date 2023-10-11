@@ -13,9 +13,16 @@ import com.sevtinge.cemiuiler.utils.devicesdk.isAndroidU
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField
 import de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField
+import com.sevtinge.cemiuiler.utils.replaceMethod
 
 object LockScreenDoubleTapToSleep : BaseHook() {
     override fun init() {
+
+               "com.android.keyguard.wallpaper.MiuiKeyguardWallPaperManager".replaceMethod("isWallpaperShouldBlur")
+{
+return@replaceMethod true
+}
+
         loadClass(
             if (isAndroidU())
                 "com.android.systemui.shade.NotificationsQuickSettingsContainer"
