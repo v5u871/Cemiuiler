@@ -85,10 +85,6 @@ object AddBlurEffectToNotificationView : BaseHook() {
             val mediaDataFilterClass =
                 findClassIfExists("com.android.systemui.media.MediaDataFilter") ?: return
 
-            val expandableNotificationRowClass =
-                findClassIfExists("com.android.systemui.statusbar.notification.row.ExpandableNotificationRow")
-                    ?: return
-
  
 
             // 增加一个控制中心音乐播放器判断
@@ -155,6 +151,11 @@ object AddBlurEffectToNotificationView : BaseHook() {
                 logE(t)
             }
         }
+
+            val expandableNotificationRowClass =
+                findClassIfExists("com.android.systemui.statusbar.notification.row.ExpandableNotificationRow")
+                    ?: return
+
 
            // 增加一个锁屏页面判断
             var onKeyguard = false
