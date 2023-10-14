@@ -30,7 +30,7 @@ object BlurSecurity : BaseHook() {
     val backgroundColor = mPrefsMap.getInt("security_center_color", -1)
     val shouldInvertColor = !ColorUtils.isDarkColor(backgroundColor)
 
-    private var appVersionCode = 40000727
+    private var appVersionCode = 40000780
 
     // 反色 同时保持红蓝色变化不大
     @RequiresApi(Build.VERSION_CODES.S)
